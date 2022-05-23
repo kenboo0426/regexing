@@ -4,4 +4,5 @@
 require 'bundler/setup'
 require 'regexing'
 
-Regexing.start
+require 'irb'
+IRB.start(__FILE__)
