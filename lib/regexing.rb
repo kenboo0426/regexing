@@ -13,6 +13,7 @@ module Regexing
   # Error that will be raised if the answer is wrong
   class WrongAnswerError < Error; end
 
+  TIMES_REQUIRED_IN_COMPLETE = 5
   @current_gate = nil
   @incorrect_number = 0
 
@@ -22,15 +23,21 @@ module Regexing
     def start
       @current_gate = 1
       opening_message
-      3.times do
+      TIMES_REQUIRED_IN_COMPLETE.times do
         question
       end
-      complete_message
+      complete_process
+    rescue WrongAnswerError
     end
 
-    def fetch_question
+    def fetch_question(question_number: nil)
       level = current_level
-      YAML.load_file("./lib/questions/#{level}.yml").to_a.sample
+      questions = YAML.load_file("./lib/questions/#{level}.yml")
+      if question_number
+        questions[question_number]
+      else
+        questions.to_a.sample
+      end
     end
 
     def current_level
@@ -54,7 +61,7 @@ module Regexing
         We'll start.
 
         example:
-        Typing regex type： [^1-9]
+        Typing regex type： [a-z0-9]
 
 
       START
@@ -64,8 +71,8 @@ module Regexing
       Readline.readline
     end
 
-    def question
-      _question_number, question_detail = fetch_question
+    def question(question_number: nil, question_detail: nil)
+      question_number, question_detail = fetch_question unless question_number || question_detail
       question_should_pass_array = question_detail['pass']
       question_should_pass = <<~QUESTION
         1. "#{question_should_pass_array[0]}"
@@ -86,32 +93,34 @@ module Regexing
       print 'Typing regex type： '
       input_regex = Readline.readline
 
-      check(input_regex, question_detail)
+      check(input_regex, question_number, question_detail)
     end
 
-    def check(input_regex, question_detail)
-      question_detail['pass'].each do |text|
+    def check(input_regex, question_number, question_detail)
+      is_all_passed = true
+      question_detail['pass'].each_with_index do |text, i|
         if match?(text, input_regex)
-          p '正解です'
+          puts "✅  #{i + 1}. passed"
         else
-          p '違います'
-          raise WrongAnswerError
+          puts "❌  #{i + 1}. not passed"
+          is_all_passed = false
         end
       end
 
-      question_detail['not_pass'].each do |text|
+      question_detail['not_pass'].each_with_index do |text, i|
         if !match?(text, input_regex)
-          p '正解です'
+          puts "✅  #{i + 1}. passed"
         else
-          p '違います'
-          raise WrongAnswerError
+          puts "❌  #{i + 1}. not passed"
+          is_all_passed = false
         end
       end
-      answered_message
-      @current_gate += 1
-    rescue WrongAnswerError
-      p "答え: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i"
-      @incorrect_number += 1
+
+      if is_all_passed
+        passed_process
+      else
+        failed_process(question_detail, question_number)
+      end
     end
 
     def match?(target_text, input_regex)
@@ -121,22 +130,49 @@ module Regexing
       target_text.eql?(matched_text)
     end
 
-    def answered_message
-      answered_message = <<~ANSWERED
-        Great!!
-        Next question!
-      ANSWERED
+    def passed_process
+      passed_message = <<~MESSAGE
 
-      warn(answered_message)
+        Great!!  Next question!
+
+      MESSAGE
+
+      warn(passed_message)
+      @current_gate += 1
     end
 
-    def complete_message
+    def failed_process(question_detail, question_number)
+      failed_message = <<~MESSAGE
+        Correct answer sample is "#{question_detail['answer']}"
+
+
+      MESSAGE
+
+      warn(failed_message)
+      @incorrect_number += 1
+      incomplete_process if @incorrect_number >= 3
+      question(question_number:, question_detail:)
+    end
+
+    def complete_process
       complete_message = <<~MESSAGE
         Congratulations!!
         You are a regular expression master🎉
       MESSAGE
 
       warn(complete_message)
+    end
+
+    def incomplete_process
+      @incorrect_number = 0
+      incomplete_message = <<~MESSAGE
+        You fail 🫣
+        You made a mistake 3 times.
+        Aim to be a regular expression master.
+      MESSAGE
+
+      warn(incomplete_message)
+      raise WrongAnswerError
     end
   end
 end
