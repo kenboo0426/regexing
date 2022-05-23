@@ -1,0 +1,21 @@
+one:
+  pass: [regexingintermediate@gmail.com, regexing@yahoo.com, regexing@outlook.com]
+  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
+  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+
+two:
+  pass: [regexingintermediate@gmail.com, regexing@yahoo.com, regexing@outlook.com]
+  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
+  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+
+three:
+  pass:
+    [regexingintermediate@gmail.com, regexing@yahoo.com, regexing@outlook.com]
+  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
+  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+
+emample:
+  pass:
+    [regexinfvregbergregg@gmail.com, regexing@yahoo.com, regexing@outlook.com]
+  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
+  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
