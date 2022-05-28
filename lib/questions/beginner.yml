@@ -1,21 +1,19 @@
 one:
-  pass: [regexing@gmail.com, regexing@yahoo.com, regexing@outlook.com]
-  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
-  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+  pass: [Regexing is great, Regexing is a ruby gem, Regexing is CLI library]
+  not_pass: [In what language is regexing written?, Is this a regexing?, What is regexing?]
+  answer: \ARegexing
 
 two:
-  pass: [regexiregergergng@gmail.com, regexing@yahoo.com, regexing@outlook.com]
-  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
-  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+  pass: [3, 4, 12]
+  not_pass: [one, two, three]
+  answer: \A[0-9]+
 
 three:
-  pass:
-    [regexinfvregbergregg@gmail.com, regexing@yahoo.com, regexing@outlook.com]
-  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
-  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+  pass: [regex, regexin, regexing]
+  not_pass: [re, rege, legex]
+  answer: \Aregex
 
 emample:
-  pass:
-    [regexinfvregbergregg@gmail.com, regexing@yahoo.com, regexing@outlook.com]
-  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
-  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+  pass: [Regexing is great, Regexing is a ruby gem, Regexing is CLI library]
+  not_pass: [In what language is regexing written?, Is this a regexing?, What is regexing?]
+  answer: \ARegexing
