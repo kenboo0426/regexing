@@ -37,7 +37,7 @@ module Regexing
       level = current_level
       questions = YAML.load_file("./lib/questions/#{level}.yml")
       if question_number
-        questions[question_number]
+        questions.to_a.find { |q| q[0] == question_number }
       else
         questions.to_a.sample
       end
@@ -61,21 +61,23 @@ module Regexing
       opening_message = <<~START
         Welcome Regexing!!
         There are 5 questions. The difficulty level will gradually increase.
-        We'll start.
 
-        example:
-        Typing regex type： [a-z0-9]
-
-
+        -- Example --------------------
       START
 
       warn(opening_message)
-      print 'Press Enter to start!'
-      Readline.readline
+      question(question_number: 'example', example: true)
+      answer_manner = <<~ANSWER
+        -------------------------------
+        Typing regex type： \A[a-z]+
+
+      ANSWER
+      warn(answer_manner)
+      Readline.readline('Press Enter to start!')
     end
 
-    def question(question_number: nil, question_detail: nil)
-      question_number, question_detail = fetch_question unless question_number || question_detail
+    def question(question_number: nil, question_detail: nil, **option)
+      question_number, question_detail = fetch_question(question_number:) unless question_number && question_detail
       question_should_pass_array = question_detail['pass']
       question_should_pass = <<~QUESTION
         Pass questions
@@ -95,10 +97,9 @@ module Regexing
         6. "#{question_should_not_pass_array[2]}"
       QUESTION
       warn(question_should_not_pass)
+      return if option[:example]
 
-      print 'Typing regex type： '
-      input_regex = Readline.readline
-
+      input_regex = Readline.readline('Typing regex type： ')
       check(input_regex, question_number, question_detail)
     end
 
@@ -115,9 +116,9 @@ module Regexing
       puts '--------------------------------------------'
       question_detail['not_pass'].each_with_index do |text, i|
         if !match?(text, input_regex)
-          puts "✅  #{i + 1}. passed"
+          puts "✅  #{i + 4}. passed"
         else
-          puts "❌  #{i + 1}. not passed"
+          puts "❌  #{i + 4}. not passed"
           is_all_passed = false
         end
       end
@@ -168,7 +169,7 @@ module Regexing
 
       MESSAGE
       warn(failed_message)
-      question(question_number: question_number, question_detail: question_detail)
+      question(question_number:, question_detail:)
     end
 
     def complete_process
