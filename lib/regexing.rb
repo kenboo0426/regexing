@@ -33,12 +33,15 @@ module Regexing
       incomplete_process(e.message)
     end
 
+    private
+
     def fetch_question(question_number: nil)
       level = current_level
       questions = YAML.load_file("./lib/questions/#{level}.yml")
       if question_number
         questions.to_a.find { |q| q[0] == question_number }
       else
+        questions = questions.delete('example')
         questions.to_a.sample
       end
     end
