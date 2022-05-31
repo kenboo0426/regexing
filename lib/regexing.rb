@@ -18,9 +18,10 @@ module Regexing
   TIMES_REQUIRED_IN_INCOMPLETE = 3
   @current_gate = nil
   @incorrect_number = 0
+  @passed_questions = []
 
   class << self
-    attr_reader :current_gate, :incorrect_number
+    attr_reader :current_gate, :incorrect_number, :passed_questions
 
     def start
       @current_gate = 1
@@ -31,17 +32,24 @@ module Regexing
       complete_process
     rescue WrongAnswerError => e
       incomplete_process(e.message)
+    ensure
+      @incorrect_number = 0
+      @passed_questions = []
     end
 
     private
 
     def fetch_question(question_number: nil)
-      level = current_level
-      questions = YAML.load_file("./lib/questions/#{level}.yml")
+      questions = YAML.load_file("./lib/questions/#{current_level}.yml")
       if question_number
         questions.to_a.find { |q| q[0] == question_number }
       else
-        questions = questions.delete('example')
+        exclude_questions = @passed_questions.map do |q|
+          level, number = q.split(':')
+          number if level == current_level
+        end.compact
+        questions = questions.except('example', *exclude_questions)
+
         questions.to_a.sample
       end
     end
@@ -108,26 +116,26 @@ module Regexing
 
     def check(input_regex, question_number, question_detail)
       is_all_passed = true
-      question_detail['pass'].each_with_index do |text, i|
+      question_detail['pass'].each.with_index(1) do |text, i|
         if match?(text, input_regex)
-          puts "✅  #{i + 1}. passed"
+          puts "✅  #{i}. passed"
         else
-          puts "❌  #{i + 1}. not passed"
+          puts "❌  #{i}. not passed"
           is_all_passed = false
         end
       end
       puts '--------------------------------------------'
-      question_detail['not_pass'].each_with_index do |text, i|
+      question_detail['not_pass'].each.with_index(4) do |text, i|
         if !match?(text, input_regex)
-          puts "✅  #{i + 4}. passed"
+          puts "✅  #{i}. passed"
         else
-          puts "❌  #{i + 4}. not passed"
+          puts "❌  #{i}. not passed"
           is_all_passed = false
         end
       end
 
       if is_all_passed
-        passed_process
+        passed_process(question_number)
       else
         failed_process(question_detail, question_number)
       end
@@ -138,7 +146,7 @@ module Regexing
 
       input_regex = Regexp.new(input_regex)
       matched_text = target_text.to_s.match(input_regex).to_s
-      !matched_text.empty?
+      !matched_text.empty? && target_text.eql?(matched_text)
     rescue RegexpError
       false
     end
@@ -147,7 +155,7 @@ module Regexing
       input_regex.include?(target_text.to_s)
     end
 
-    def passed_process
+    def passed_process(question_number)
       passed_message = <<~MESSAGE
 
         Great!!  Next question!
@@ -155,6 +163,7 @@ module Regexing
       MESSAGE
 
       warn(passed_message)
+      @passed_questions << "#{current_level}:#{question_number}"
       @current_gate += 1
     end
 
@@ -185,7 +194,6 @@ module Regexing
     end
 
     def incomplete_process(answer)
-      @incorrect_number = 0
       incomplete_message = <<~MESSAGE
         Correct answer sample is "#{answer}"
 
