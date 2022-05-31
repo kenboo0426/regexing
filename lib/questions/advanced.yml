@@ -5,17 +5,15 @@ one:
 
 two:
   pass: [$281.00, $64.90, $39820]
-  not_pass: [125円, 332, 123 dollor]
+  not_pass: [125円, "332", 123 dollor]
   answer: \$[0-9]+(\.[0-9][0-9])?
 
 three:
-  pass:
-    [regexing@gmail.com, regex-ing@yahoo.co.jp, regexing1234@outlook.com]
+  pass: [regexing@gmail.com, regex-ing@yahoo.co.jp, regexing1234@outlook.com]
   not_pass: [regexing@Gmail.com, regexingyahoo.com, regexing@outlook]
   answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
 
 example:
-  pass:
-    [regexing@gmail.com, regex-ing@yahoo.co.jp, regexing1234@outlook.com]
-  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
+  pass: [regexing@gmail.com, regex-ing@yahoo.co.jp, regexing1234@outlook.com]
+  not_pass: [regexing@Gmail.com, regexingyahoo.com, regexing@outlook]
   answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z

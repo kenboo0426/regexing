@@ -186,8 +186,23 @@ module Regexing
 
     def complete_process
       complete_message = <<~MESSAGE
-        Congratulations!!
-        You are a regular expression master🎉
+              Congratulations!!
+              You are a regular expression master🎉
+
+
+        .                                                                             (Nm-                                                           ....
+          .WMMMMMMMMNN+.                                                              ?MB:                                                          .dM#:
+          .WMD`    -?MMb        ..             ..    `         ..       `        `    ``      `    .            ..    `         ..         `    ..   dM#!
+          .WMD       dM#<    (gMNNMNa,     .&NMNNNmJdMl    .+NNNNMm+.  .WMN+   .gM#>  JMH_  .MNA+MNNMNm,     .gMMNNN&dM#     (gMNNMNm.    jMNadMN#   dM#!
+          .WMD      .NM@`  .dM#=!_?TMNo   (MMB=!_?TMMMl   (MM9^~?7MMm-  .vMNo..dMB!   JM#:  -MMM8!~_?MMN_  .gMMY!~?7MMM#`  .dM#=!~?TMNe   JMMMY<!`   dMK~   `
+          .WMNgggggNMM9!  .dM#_.....JMN- .dMD      JMMl  .MMD.....(MNy    ?MMmMMY`    JM#:  -MMD     (MM}  (MS{      MM#` .dM#:.....dM#-  JMM}       dMK~
+          .WM@777TMM#_    (dMMMMMMMMMMM\ (MNI      (MMl  jMMMMMMMMMMM@     (MMM%      JM#:  -MNI     (MM}  dM#_      dM#` .WMMMMMMMMMMMl  JMN:       dMD~
+          .WMD    (MM#.   .dMH!           MMN-    .jMMl  (MNr             .dMMMNe.    JM#:  -MNI     (MM}  (MNe.    .MM#` .dM#_           JMN:        ``    `
+          .WMD     (MMN,   ?MMm.....gNK!  (HMNm&JgMMMMl  .TMNe....(gNC   (MM3`?MMm.   JM#:  -MNI     (MM}   ?MMNa++gMMM#`  (MMm.....gNK~  JMN:      .(ge.
+          .WMD      .MMN+   _TMMNNMMM9!     ?TWHH9^<MMl    ?HMMNNMMB=  .jM#%   (MMN,  JM#:  -MNI     (MM}    .7WHHBY!dM#`   .7MMNNMMM5`   JMN:      ,MMM
+                                _~`       .JJ.     (MM{       `~~`                                         .JJ,.    .dM8        _~`                   ``   `
+                                          -TMMNgggMM#=`                                                     ?MMNmgggMM8!
+                                             ?""""7!                                                          ?7""""7`
       MESSAGE
 
       warn(complete_message)
