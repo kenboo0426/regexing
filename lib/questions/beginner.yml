@@ -9,9 +9,9 @@ two:
   answer: \A[0-9]+
 
 three:
-  pass: [regex, regexin, regexing]
-  not_pass: [re, rege, legex]
-  answer: \Aregex
+  pass: [<h1>H1 Hello</h1>, <h2>H2 Hello</h2>, <h6>H6 Hello</h6>]
+  not_pass: [H1 Hello, <p>P Hello</p>, <h7>H7 Hello</h7>]
+  answer: \A<h[1-6]>
 
 emample:
   pass: [Regexing is great, Regexing is a ruby gem, Regexing is CLI library]
