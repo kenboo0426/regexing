@@ -3,6 +3,7 @@
 require 'readline'
 require 'yaml'
 require 'byebug'
+require 'humanize'
 
 module Regexing
   class Error < StandardError; end
@@ -14,6 +15,7 @@ module Regexing
   class WrongAnswerError < Error; end
 
   TIMES_REQUIRED_IN_COMPLETE = 5
+  TIMES_REQUIRED_IN_INCOMPLETE = 3
   @current_gate = nil
   @incorrect_number = 0
 
@@ -27,7 +29,8 @@ module Regexing
         question
       end
       complete_process
-    rescue WrongAnswerError
+    rescue WrongAnswerError => e
+      incomplete_process(e.message)
     end
 
     def fetch_question(question_number: nil)
@@ -56,7 +59,7 @@ module Regexing
 
     def opening_message
       opening_message = <<~START
-        Welcom Regexing!!
+        Welcome Regexing!!
         There are 5 questions. The difficulty level will gradually increase.
         We'll start.
 
@@ -75,18 +78,21 @@ module Regexing
       question_number, question_detail = fetch_question unless question_number || question_detail
       question_should_pass_array = question_detail['pass']
       question_should_pass = <<~QUESTION
+        Pass questions
         1. "#{question_should_pass_array[0]}"
         2. "#{question_should_pass_array[1]}"
         3. "#{question_should_pass_array[2]}"
+        -------------------------------
       QUESTION
 
       warn(question_should_pass)
 
       question_should_not_pass_array = question_detail['not_pass']
       question_should_not_pass = <<~QUESTION
-        1. "#{question_should_not_pass_array[0]}"
-        2. "#{question_should_not_pass_array[1]}"
-        3. "#{question_should_not_pass_array[2]}"
+        Not pass questions
+        4. "#{question_should_not_pass_array[0]}"
+        5. "#{question_should_not_pass_array[1]}"
+        6. "#{question_should_not_pass_array[2]}"
       QUESTION
       warn(question_should_not_pass)
 
@@ -106,7 +112,7 @@ module Regexing
           is_all_passed = false
         end
       end
-
+      puts '--------------------------------------------'
       question_detail['not_pass'].each_with_index do |text, i|
         if !match?(text, input_regex)
           puts "✅  #{i + 1}. passed"
@@ -124,10 +130,17 @@ module Regexing
     end
 
     def match?(target_text, input_regex)
-      input_regex = Regexp.new(input_regex) unless input_regex.instance_of?(Regexp)
+      raise RegexpError if own_include?(target_text, input_regex)
 
-      matched_text = target_text.match(input_regex).to_s
-      target_text.eql?(matched_text)
+      input_regex = Regexp.new(input_regex)
+      matched_text = target_text.to_s.match(input_regex).to_s
+      !matched_text.empty?
+    rescue RegexpError
+      false
+    end
+
+    def own_include?(target_text, input_regex)
+      input_regex.include?(target_text.to_s)
     end
 
     def passed_process
@@ -142,16 +155,20 @@ module Regexing
     end
 
     def failed_process(question_detail, question_number)
-      failed_message = <<~MESSAGE
-        Correct answer sample is "#{question_detail['answer']}"
+      @incorrect_number += 1
+      raise WrongAnswerError, question_detail['answer'] if @incorrect_number >= TIMES_REQUIRED_IN_INCOMPLETE
 
+      message = if (TIMES_REQUIRED_IN_INCOMPLETE - @incorrect_number) == 1
+                  'one more time'
+                else
+                  "#{(TIMES_REQUIRED_IN_INCOMPLETE - @incorrect_number).humanize} more times"
+                end
+      failed_message = <<~MESSAGE
+        If you make a mistake #{message}, you will fail
 
       MESSAGE
-
       warn(failed_message)
-      @incorrect_number += 1
-      incomplete_process if @incorrect_number >= 3
-      question(question_number:, question_detail:)
+      question(question_number: question_number, question_detail: question_detail)
     end
 
     def complete_process
@@ -163,16 +180,17 @@ module Regexing
       warn(complete_message)
     end
 
-    def incomplete_process
+    def incomplete_process(answer)
       @incorrect_number = 0
       incomplete_message = <<~MESSAGE
+        Correct answer sample is "#{answer}"
+
         You fail 🫣
-        You made a mistake 3 times.
-        Aim to be a regular expression master.
+        You made a mistake #{TIMES_REQUIRED_IN_INCOMPLETE} times.
+        Aim to be a regular expression master!
       MESSAGE
 
       warn(incomplete_message)
-      raise WrongAnswerError
     end
   end
 end
