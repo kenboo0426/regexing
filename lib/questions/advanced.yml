@@ -14,7 +14,7 @@ three:
   not_pass: [regexing@Gmail.com, regexingyahoo.com, regexing@outlook]
   answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
 
-emample:
+example:
   pass:
     [regexing@gmail.com, regex-ing@yahoo.co.jp, regexing1234@outlook.com]
   not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]

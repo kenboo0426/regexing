@@ -14,7 +14,7 @@ three:
   not_pass: [january third, 13/1, 1/40]
   answer: ([1-9]|1[0-2]\/[1-9]|[12][0-9]|3[01])
 
-emample:
+example:
   pass: [000-1111, 123-4567, 891-0123]
   not_pass: [1234567, 1234-567, aaa-bbbb]
   answer: \A[0-9]{3}\-[0-9]{4}

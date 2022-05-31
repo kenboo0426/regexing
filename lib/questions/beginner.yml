@@ -13,7 +13,7 @@ three:
   not_pass: [H1 Hello, <p>P Hello</p>, <h7>H7 Hello</h7>]
   answer: \A<h[1-6]>
 
-emample:
-  pass: [Regexing is great, Regexing is a ruby gem, Regexing is CLI library]
-  not_pass: [In what language is regexing written?, Is this a regexing?, What is regexing?]
-  answer: \ARegexing
+example:
+  pass: [a, abc, z]
+  not_pass: [a b, A, 1]
+  answer: \A[a-z]+
