@@ -1,0 +1,21 @@
+one:
+  pass: [111-111-1111, 000-111-2222, 111(222)3333]
+  not_pass: [111-1111-111, 111-11111-11, "1111111111"]
+  answer: \A[0-9]{3}[-(][0-9]{3}[-)][0-9]{4}
+
+two:
+  pass: [$281.00, $64.90, $39820]
+  not_pass: [125円, 332, 123 dollor]
+  answer: \$[0-9]+(\.[0-9][0-9])?
+
+three:
+  pass:
+    [regexing@gmail.com, regex-ing@yahoo.co.jp, regexing1234@outlook.com]
+  not_pass: [regexing@Gmail.com, regexingyahoo.com, regexing@outlook]
+  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
+
+example:
+  pass:
+    [regexing@gmail.com, regex-ing@yahoo.co.jp, regexing1234@outlook.com]
+  not_pass: [Regexing@gmail.com, regexingyahoo.com, regexing@outlook]
+  answer: \A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z
