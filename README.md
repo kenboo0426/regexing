@@ -2,6 +2,10 @@
 
 Regexing is a CLI library that allows you to practice Ruby regular expressions easily and quickly.
 
+
+https://user-images.githubusercontent.com/76637076/171319266-07e1cd97-792a-4985-a482-24907fc79004.mov
+
+
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
