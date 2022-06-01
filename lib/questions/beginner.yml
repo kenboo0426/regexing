@@ -1,6 +1,11 @@
 one:
-  pass: [Regexingisgreat, Regexingisaruby gem, RegexingisCLIlibrary]
-  not_pass: [Inwhatlanguageisregexingwritten?, Isthisaregexing?, Whatisregexing?]
+  pass: [Regexing is great, Regexing is a ruby gem, Regexing is CLI library]
+  not_pass:
+    [
+      In what language is regexing written?,
+      Is this a regexing?,
+      What is regexing?,
+    ]
   answer: \ARegexing[a-zA-Z\s]+
 
 two:
@@ -9,7 +14,7 @@ two:
   answer: \A[0-9]+
 
 three:
-  pass: [<h1>H1Hello</h1>, <h2>H2Hello</h2>, <h6>H6Hello</h6>]
+  pass: [<h1>H1 Hello</h1>, <h2>H2 Hello</h2>, <h6>H6 Hello</h6>]
   not_pass: [H1 Hello, <p>P Hello</p>, <h7>H7 Hello</h7>]
   answer: \A<h[1-6]>.*</h[1-6]>
 
