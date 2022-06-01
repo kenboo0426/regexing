@@ -15,5 +15,5 @@ three:
 
 example:
   pass: [a, abc, z]
-  not_pass: [a b, A, 1]
+  not_pass: [a b, A, "1"]
   answer: \A[a-z]+
