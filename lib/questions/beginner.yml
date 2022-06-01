@@ -1,6 +1,7 @@
 one:
   pass: [Regexing is great, Regexing is a ruby gem, Regexing is CLI library]
-  not_pass: [In what language is regexing written?, Is this a regexing?, What is regexing?]
+  not_pass:
+    [In what language is regexing written, Is this a regexing, What is regexing]
   answer: \ARegexing[a-zA-Z\s]+
 
 two:
@@ -15,5 +16,5 @@ three:
 
 example:
   pass: [a, abc, z]
-  not_pass: [a b, A, 1]
+  not_pass: [a b, A, "1"]
   answer: \A[a-z]+

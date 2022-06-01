@@ -80,7 +80,7 @@ module Regexing
       question(question_number: 'example', example: true)
       answer_manner = <<~ANSWER
         -------------------------------
-        Typing regex type： \A[a-z]+
+        Typing regex type： [a-z]+
 
       ANSWER
       warn(answer_manner)
