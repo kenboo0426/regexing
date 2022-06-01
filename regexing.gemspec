@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Dialogueally ask questions and answer'
   spec.homepage = 'https://github.com/kenboo0426/regexing'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.6.0'
+  spec.required_ruby_version = '>= 3.1.0'
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/kenboo0426/regexing'
   spec.metadata['changelog_uri'] = 'https://github.com/kenboo0426/regexing/blob/master/CHANGELOG.md'
