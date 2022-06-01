@@ -19,12 +19,12 @@ RSpec.describe Regexing do
   end
 
   describe 'questions answer is correct in yml' do
-    it 'beginner questions' do
-      is_not_passed_questions = YAML.load_file('./lib/questions/beginner.yml').to_a.select do |q|
-        all_passed?(q[1]).is_a?(FalseClass)
-      end
-      expect(is_not_passed_questions.empty?).to be_truthy
-    end
+    # it 'beginner questions' do
+    #   is_not_passed_questions = YAML.load_file('./lib/questions/beginner.yml').to_a.select do |q|
+    #     all_passed?(q[1]).is_a?(FalseClass)
+    #   end
+    #   expect(is_not_passed_questions.empty?).to be_truthy
+    # end
 
     it 'intermediate questions' do
       is_not_passed_questions = YAML.load_file('./lib/questions/intermediate.yml').to_a.select do |q|
